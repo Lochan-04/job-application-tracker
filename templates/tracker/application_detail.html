@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ application.company_name }} | Placement Tracker{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+    <div class="rounded-[2rem] border border-ink/10 bg-white/90 p-8 shadow-card">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+            <div class="max-w-3xl">
+                <div class="flex flex-wrap items-center gap-3">
+                    <h1 class="font-display text-4xl font-bold">{{ application.role }}</h1>
+                    <span class="status-pill status-{{ application.status }}">{{ application.get_status_display }}</span>
+                    <span class="priority-pill priority-{{ application.priority }}">{{ application.get_priority_display }}</span>
+                </div>
+                <p class="mt-3 text-xl text-slate">{{ application.company_name }}{% if application.location %} | {{ application.location }}{% endif %}</p>
+                {% if application.next_step %}
+                    <div class="mt-5 rounded-2xl bg-canvas p-4">
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate">Immediate next step</p>
+                        <p class="mt-2 text-slate">{{ application.next_step }}</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'application-update' application.pk %}" class="rounded-2xl bg-navy px-5 py-3 font-medium text-canvas transition hover:-translate-y-0.5">Edit</a>
+                <a href="{% url 'application-delete' application.pk %}" class="rounded-2xl border border-red-200 px-5 py-3 font-medium text-red-600 transition hover:bg-red-50">Delete</a>
+            </div>
+        </div>
+        <div class="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            <div class="rounded-3xl bg-canvas p-5">
+                <p class="text-sm text-slate">Date applied</p>
+                <p class="mt-2 font-display text-2xl font-bold">{{ application.date_applied }}</p>
+            </div>
+            <div class="rounded-3xl bg-canvas p-5">
+                <p class="text-sm text-slate">Follow-up</p>
+                <p class="mt-2 font-display text-2xl font-bold">{{ application.follow_up_date|default:"Not set" }}</p>
+            </div>
+            <div class="rounded-3xl bg-canvas p-5">
+                <p class="text-sm text-slate">Last contacted</p>
+                <p class="mt-2 font-display text-2xl font-bold">{{ application.last_contacted_on|default:"Not set" }}</p>
+            </div>
+            <div class="rounded-3xl bg-canvas p-5">
+                <p class="text-sm text-slate">Job type</p>
+                <p class="mt-2 font-display text-2xl font-bold">{{ application.get_job_type_display }}</p>
+            </div>
+            <div class="rounded-3xl bg-canvas p-5">
+                <p class="text-sm text-slate">Salary</p>
+                <p class="mt-2 font-display text-2xl font-bold">{{ application.salary_range|default:"Not listed" }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+        <div class="space-y-6">
+            <div class="rounded-[2rem] border border-ink/10 bg-white/90 p-8 shadow-card">
+                <h2 class="font-display text-2xl font-bold">Application details</h2>
+                <dl class="mt-6 space-y-4 text-sm">
+                    <div>
+                        <dt class="text-slate">Source</dt>
+                        <dd class="mt-1 text-base">{{ application.source|default:"Not set" }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-slate">Resume version</dt>
+                        <dd class="mt-1 text-base">{{ application.resume_version|default:"Not set" }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-slate">Contact name</dt>
+                        <dd class="mt-1 text-base">{{ application.contact_name|default:"Not set" }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-slate">Contact email</dt>
+                        <dd class="mt-1 text-base">{{ application.contact_email|default:"Not set" }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-slate">Application link</dt>
+                        <dd class="mt-1 text-base">
+                            {% if application.application_link %}
+                                <a class="text-pine underline decoration-coral decoration-2 underline-offset-4" href="{{ application.application_link }}" target="_blank" rel="noreferrer">Open listing</a>
+                            {% else %}
+                                Not set
+                            {% endif %}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="rounded-[2rem] border border-ink/10 bg-white/90 p-8 shadow-card">
+                <h2 class="font-display text-2xl font-bold">Placement fit</h2>
+                <div class="mt-5 space-y-3 text-slate">
+                    <div class="rounded-2xl bg-canvas p-4">Priority helps identify which applications need the most attention during active placement cycles.</div>
+                    <div class="rounded-2xl bg-canvas p-4">Last contact and follow-up dates make recruiter communication easier to track.</div>
+                    <div class="rounded-2xl bg-canvas p-4">Resume version links each application to the exact profile submitted.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-[2rem] border border-ink/10 bg-white/90 p-8 shadow-card">
+            <h2 class="font-display text-2xl font-bold">Notes and preparation</h2>
+            <p class="mt-6 whitespace-pre-line text-lg leading-8 text-slate">{{ application.notes|default:"No notes yet." }}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

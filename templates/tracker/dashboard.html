@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load tracker_extras %}
+
+{% block title %}Dashboard | Placement Tracker{% endblock %}
+
+{% block content %}
+<section class="space-y-8">
+    <div class="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
+        <div class="rounded-[2rem] border border-white/70 bg-[linear-gradient(135deg,_rgba(11,23,42,0.98),_rgba(19,34,56,0.92))] p-8 text-white shadow-card xl:p-10">
+            <div class="max-w-3xl">
+                <div class="max-w-2xl">
+                    <p class="text-sm font-medium uppercase tracking-[0.25em] text-white/50">Placement Dashboard</p>
+                    <h1 class="mt-4 max-w-[13ch] font-display text-[3.15rem] font-bold leading-[0.98] tracking-[-0.04em] sm:text-[3.85rem] xl:max-w-[12ch] xl:text-[4.1rem]">Manage jobs and internships with a cleaner, placement-ready workflow.</h1>
+                    <p class="mt-6 max-w-xl text-base leading-8 text-white/68 sm:text-lg">Track application status, follow-ups, resume versions, recruiter touchpoints, and next steps in one structured dashboard designed for real-world usability.</p>
+                </div>
+                <div class="mt-8 grid max-w-xl gap-4 sm:grid-cols-2">
+                    <a href="{% url 'application-create' %}" class="hero-action hero-action-primary">Add application</a>
+                    <a href="{% url 'application-list' %}" class="hero-action hero-action-secondary">View records</a>
+                </div>
+            </div>
+            <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <div class="rounded-3xl bg-white/8 p-5 backdrop-blur-sm">
+                    <p class="text-sm text-white/60">Total applications</p>
+                    <p class="mt-3 font-display text-4xl font-bold">{{ total_count }}</p>
+                </div>
+                <div class="rounded-3xl bg-white p-5 text-ink">
+                    <p class="text-sm text-slate">Active pipeline</p>
+                    <p class="mt-3 font-display text-4xl font-bold">{{ active_count }}</p>
+                </div>
+                <div class="rounded-3xl bg-white p-5 text-ink">
+                    <p class="text-sm text-slate">Response rate</p>
+                    <p class="mt-3 font-display text-4xl font-bold">{{ response_rate }}%</p>
+                </div>
+                <div class="rounded-3xl bg-pine p-5 text-canvas">
+                    <p class="text-sm text-canvas/70">High priority</p>
+                    <p class="mt-3 font-display text-4xl font-bold">{{ high_priority_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="rounded-[2rem] border border-ink/10 bg-white/85 p-8 shadow-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate">Status Mix</p>
+                    <h2 class="mt-2 font-display text-2xl font-bold">Pipeline balance</h2>
+                </div>
+                <span class="rounded-full bg-sky px-3 py-1 text-sm font-medium text-ink">{{ offer_count }} offers</span>
+            </div>
+            <div class="mt-6 space-y-4">
+                {% for key, label in status_choices %}
+                    <div>
+                        <div class="mb-2 flex items-center justify-between text-sm">
+                            <span class="text-slate">{{ label }}</span>
+                            <span class="font-medium text-ink">{{ status_counts|get_item:key|default:0 }}</span>
+                        </div>
+                        <div class="h-2 rounded-full bg-slate-200">
+                            <div class="h-2 rounded-full bg-coral" style="width:{% widthratio status_counts|get_item:key|default:0 safe_total_count 100 %}%"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-8 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-3xl bg-canvas p-5">
+                    <p class="text-sm text-slate">Interviews in progress</p>
+                    <p class="mt-2 font-display text-3xl font-bold">{{ interview_count }}</p>
+                </div>
+                <div class="rounded-3xl bg-canvas p-5">
+                    <p class="text-sm text-slate">Follow-ups due</p>
+                    <p class="mt-2 font-display text-3xl font-bold">{{ due_follow_up_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+        <div class="rounded-[2rem] border border-ink/10 bg-white/80 p-8 shadow-card">
+            <div class="mb-6 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate">Recent records</p>
+                    <h2 class="mt-2 font-display text-2xl font-bold">Latest applications</h2>
+                </div>
+                <a class="text-sm font-medium text-pine" href="{% url 'application-list' %}">See all</a>
+            </div>
+            <div class="space-y-4">
+                {% for application in recent_applications %}
+                    <a href="{{ application.get_absolute_url }}" class="block rounded-3xl border border-ink/10 bg-canvas/80 p-5 transition hover:-translate-y-0.5 hover:bg-white">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="font-display text-xl font-bold">{{ application.role }}</p>
+                                <p class="text-slate">{{ application.company_name }}{% if application.location %} | {{ application.location }}{% endif %}</p>
+                            </div>
+                            <span class="status-pill status-{{ application.status }}">{{ application.get_status_display }}</span>
+                        </div>
+                        <div class="mt-4 flex flex-wrap gap-3 text-sm text-slate">
+                            <span>Applied {{ application.date_applied }}</span>
+                            <span>{{ application.get_job_type_display }}</span>
+                            {% if application.resume_version %}<span>{{ application.resume_version }}</span>{% endif %}
+                        </div>
+                    </a>
+                {% empty %}
+                    <div class="rounded-3xl border border-dashed border-ink/15 p-6 text-slate">No applications yet. Add your first record to bring the dashboard to life.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="grid gap-6">
+            <div class="rounded-[2rem] border border-ink/10 bg-white/80 p-8 shadow-card">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate">Action queue</p>
+                        <h2 class="mt-2 font-display text-2xl font-bold">Upcoming follow-ups</h2>
+                    </div>
+                    <span class="rounded-full bg-gold/30 px-3 py-1 text-sm font-medium text-ink">Stay proactive</span>
+                </div>
+                <div class="space-y-4">
+                    {% for application in upcoming_follow_ups %}
+                        <div class="rounded-3xl border border-ink/10 bg-white p-5">
+                            <div class="flex items-center justify-between gap-4">
+                                <div>
+                                    <p class="font-medium">{{ application.company_name }}</p>
+                                    <p class="text-sm text-slate">{{ application.role }}</p>
+                                    {% if application.next_step %}<p class="mt-2 text-sm text-slate">{{ application.next_step }}</p>{% endif %}
+                                </div>
+                                <p class="font-display text-xl font-bold">{{ application.follow_up_date|date:"M d" }}</p>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="rounded-3xl border border-dashed border-ink/15 p-6 text-slate">Nothing scheduled yet. Add follow-up dates to surface the next action here.</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="rounded-[2rem] border border-ink/10 bg-white/80 p-8 shadow-card">
+                <div class="mb-6">
+                    <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate">Interview lane</p>
+                    <h2 class="mt-2 font-display text-2xl font-bold">Interview-ready applications</h2>
+                </div>
+                <div class="space-y-4">
+                    {% for application in interview_pipeline %}
+                        <div class="rounded-3xl bg-canvas p-5">
+                            <div class="flex items-center justify-between gap-4">
+                                <div>
+                                    <p class="font-medium">{{ application.company_name }}</p>
+                                    <p class="text-sm text-slate">{{ application.role }}</p>
+                                </div>
+                                <span class="status-pill status-{{ application.status }}">{{ application.get_status_display }}</span>
+                            </div>
+                            {% if application.next_step %}
+                                <p class="mt-3 text-sm text-slate">Next step: {{ application.next_step }}</p>
+                            {% endif %}
+                        </div>
+                    {% empty %}
+                        <div class="rounded-3xl border border-dashed border-ink/15 p-6 text-slate">No active interview records yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-6 xl:grid-cols-3">
+        <div class="rounded-[2rem] border border-ink/10 bg-white/85 p-8 shadow-card">
+            <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate">Source insights</p>
+            <h2 class="mt-2 font-display text-2xl font-bold">Where applications come from</h2>
+            <div class="mt-6 space-y-4">
+                {% for item in source_breakdown %}
+                    <div class="flex items-center justify-between rounded-2xl bg-canvas px-4 py-3">
+                        <span class="text-slate">{{ item.source }}</span>
+                        <span class="font-display text-2xl font-bold">{{ item.count }}</span>
+                    </div>
+                {% empty %}
+                    <div class="rounded-3xl border border-dashed border-ink/15 p-6 text-slate">Add application sources to compare performance.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="rounded-[2rem] border border-ink/10 bg-white/85 p-8 shadow-card">
+            <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate">Activity trend</p>
+            <h2 class="mt-2 font-display text-2xl font-bold">Monthly application rhythm</h2>
+            <div class="mt-6 space-y-4">
+                {% for month, count in monthly_activity %}
+                    <div>
+                        <div class="mb-2 flex items-center justify-between">
+                            <span class="text-slate">{{ month }}</span>
+                            <span class="font-medium">{{ count }}</span>
+                        </div>
+                        <div class="h-3 rounded-full bg-canvas">
+                            <div class="h-3 rounded-full bg-pine" style="width:{% widthratio count safe_total_count 100 %}%"></div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="rounded-3xl border border-dashed border-ink/15 p-6 text-slate">Your monthly activity will appear here once records are added.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="rounded-[2rem] border border-ink/10 bg-white/85 p-8 shadow-card">
+            <p class="text-sm font-medium uppercase tracking-[0.25em] text-slate">Placement notes</p>
+            <h2 class="mt-2 font-display text-2xl font-bold">Usability-focused guidance</h2>
+            <div class="mt-6 space-y-4 text-slate">
+                <div class="rounded-2xl bg-canvas p-4">
+                    <p class="font-medium text-ink">Track resume versions</p>
+                    <p class="mt-1 text-sm">Store which resume was used for each application so you can learn what gets callbacks.</p>
+                </div>
+                <div class="rounded-2xl bg-canvas p-4">
+                    <p class="font-medium text-ink">Use next-step planning</p>
+                    <p class="mt-1 text-sm">Each record can carry the next action, which keeps the dashboard useful during busy placement weeks.</p>
+                </div>
+                <div class="rounded-2xl bg-canvas p-4">
+                    <p class="font-medium text-ink">Follow up intentionally</p>
+                    <p class="mt-1 text-sm">Due and overdue follow-ups help you avoid losing momentum after screening or interview rounds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

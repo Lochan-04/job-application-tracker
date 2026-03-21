@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} | Placement Tracker{% endblock %}
+
+{% block content %}
+<section class="grid gap-6 xl:grid-cols-[0.72fr_1.28fr]">
+    <aside class="space-y-6">
+        <div class="rounded-[2rem] border border-ink/10 bg-[linear-gradient(135deg,_rgba(11,23,42,0.98),_rgba(19,34,56,0.92))] p-8 text-white shadow-card">
+            <p class="text-sm font-medium uppercase tracking-[0.25em] text-white/50">Application editor</p>
+            <h1 class="mt-2 font-display text-4xl font-bold">{{ page_title }}</h1>
+            <p class="mt-4 text-white/70">Build a structured record for each placement opportunity with status, contact details, follow-ups, and preparation notes.</p>
+        </div>
+        <div class="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-card">
+            <h2 class="font-display text-2xl font-bold">Helpful fields</h2>
+            <div class="mt-5 space-y-4 text-sm text-slate">
+                <div class="rounded-2xl bg-canvas p-4"><span class="font-semibold text-ink">Priority</span> highlights which applications need immediate attention.</div>
+                <div class="rounded-2xl bg-canvas p-4"><span class="font-semibold text-ink">Resume version</span> lets you compare which profile works better for callbacks.</div>
+                <div class="rounded-2xl bg-canvas p-4"><span class="font-semibold text-ink">Next step</span> keeps the tracker action-oriented, not just informational.</div>
+            </div>
+        </div>
+    </aside>
+
+    <form method="post" class="grid gap-6 rounded-[2rem] border border-ink/10 bg-white/90 p-8 shadow-card lg:grid-cols-2">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="{% if field.name == 'notes' or field.name == 'next_step' %}lg:col-span-2{% endif %}">
+                <label class="mb-2 block text-sm font-medium text-ink" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <p class="mt-1 text-sm text-slate">{{ field.help_text }}</p>
+                {% endif %}
+                {% if field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ field.errors|join:', ' }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <div class="flex flex-wrap gap-3 pt-2 lg:col-span-2">
+            <button type="submit" class="rounded-2xl bg-navy px-5 py-3 font-medium text-canvas transition hover:-translate-y-0.5">Save application</button>
+            <a href="{% url 'application-list' %}" class="rounded-2xl border border-ink/10 px-5 py-3 font-medium transition hover:bg-canvas">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
