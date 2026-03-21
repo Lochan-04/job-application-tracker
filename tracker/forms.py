@@ -15,11 +15,12 @@ class StyledFormMixin:
             widget = field.widget
             existing_class = widget.attrs.get('class', '')
             widget.attrs['class'] = f"{existing_class} form-control".strip()
+            field_label = (field.label or field_name.replace('_', ' ')).strip().lower()
 
             if isinstance(widget, forms.Textarea):
-                widget.attrs.setdefault('placeholder', f'Enter {field.label.lower()}')
+                widget.attrs.setdefault('placeholder', f'Enter {field_label}')
             elif isinstance(widget, (forms.TextInput, forms.EmailInput, forms.URLInput, forms.NumberInput)):
-                widget.attrs.setdefault('placeholder', f'Enter {field.label.lower()}')
+                widget.attrs.setdefault('placeholder', f'Enter {field_label}')
 
 
 class LoginForm(StyledFormMixin, AuthenticationForm):

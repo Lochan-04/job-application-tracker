@@ -3,12 +3,12 @@
 {% block title %}Login | Placement Tracker{% endblock %}
 
 {% block content %}
-<section class="grid min-h-[calc(100vh-8rem)] items-center gap-10 pt-8 lg:grid-cols-[1.05fr_0.95fr] lg:pt-12">
-    <div class="space-y-7">
+<section class="grid min-h-[calc(100vh-8rem)] items-center gap-8 pt-6 md:pt-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pt-12">
+    <div class="space-y-6">
         <span class="inline-flex rounded-full border border-ink/10 bg-white/80 px-4 py-2 text-sm font-medium">Placement and job application tracker</span>
-        <h1 class="max-w-3xl font-display text-5xl font-bold leading-[1.02] tracking-[-0.03em] sm:text-6xl">Track every job, internship, follow-up, and outcome in one organized workspace.</h1>
-        <p class="max-w-xl text-lg leading-8 text-ink/70">Built for practical placement use, this tracker helps you manage application history, recruiter contacts, follow-up timing, and next-step preparation without losing clarity.</p>
-        <div class="grid max-w-2xl gap-5 rounded-[2rem] border border-ink/10 bg-white/72 p-6 shadow-card sm:grid-cols-3">
+        <h1 class="max-w-3xl font-display text-[2.75rem] font-bold leading-[1.02] tracking-[-0.03em] sm:text-[3.5rem] lg:text-[4.3rem]">Track every job, internship, follow-up, and outcome in one organized workspace.</h1>
+        <p class="max-w-xl text-base leading-7 text-ink/70 sm:text-lg sm:leading-8">Built for practical placement use, this tracker helps you manage application history, recruiter contacts, follow-up timing, and next-step preparation without losing clarity.</p>
+        <div class="grid max-w-2xl gap-4 rounded-[2rem] border border-ink/10 bg-white/72 p-5 shadow-card sm:grid-cols-3 sm:gap-5 sm:p-6">
             <div>
                 <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate">Status flow</p>
                 <p class="mt-2 text-base font-semibold text-ink">Wishlist to offer</p>
@@ -23,10 +23,10 @@
             </div>
         </div>
     </div>
-    <div class="rounded-[2rem] border border-ink/10 bg-white/80 p-8 shadow-card backdrop-blur">
-        <div class="mb-8">
+    <div class="rounded-[2rem] border border-ink/10 bg-white/80 p-6 shadow-card backdrop-blur sm:p-8">
+        <div class="mb-6 sm:mb-8">
             <p class="text-sm font-medium uppercase tracking-[0.25em] text-ink/50">Welcome back</p>
-            <h2 class="mt-2 font-display text-[2.35rem] font-bold tracking-[-0.03em]">Log into your tracker</h2>
+            <h2 class="mt-2 font-display text-[2rem] font-bold tracking-[-0.03em] sm:text-[2.35rem]">Log into your tracker</h2>
             <p class="mt-3 text-sm leading-7 text-slate">Use your existing account to open your application dashboard.</p>
         </div>
         <form method="post" class="space-y-5" autocomplete="off" data-login-form>
