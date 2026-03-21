@@ -17,9 +17,20 @@ env/
 .pytest_cache/
 .mypy_cache/
 logs/
+node_modules/
+client/node_modules/
+server/node_modules/
+dist/
+client/dist/
+client/.env
+client/.env.local
+server/.env.local
+*.log
 
 # OS/editor
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+.env
+server/.env

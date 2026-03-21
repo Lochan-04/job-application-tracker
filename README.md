@@ -1,39 +1,79 @@
-# TrackrBoard
+# Placement Tracker
 
-A polished job application tracker built with Django, HTML, CSS, JavaScript, Tailwind CSS, and SQL-backed storage through SQLite.
+A MERN-style job application tracker built for placement-focused workflows. The project keeps the current polished layout while moving the application architecture toward:
 
-## Features
-
-- User signup, login, and logout
-- Dashboard with application metrics and status mix
-- Create, edit, view, delete, search, and filter job applications
-- Follow-up date tracking
-- Responsive custom UI with Tailwind CSS and additional custom styling
+- MongoDB for data
+- Express for the API
+- React for the frontend
+- Node.js for the runtime
 
 ## Stack
 
-- Backend: Django 5
-- Frontend: Django templates, HTML, Tailwind CSS, custom CSS, vanilla JavaScript
-- Database: SQLite
+- Frontend: React + Vite + Tailwind utility classes + custom CSS
+- Backend: Express + Mongoose + JWT auth
+- Database: MongoDB
+
+## Project structure
+
+```text
+client/   React frontend
+server/   Express + MongoDB backend
+```
+
+## Features
+
+- User signup and login
+- Protected dashboard
+- Application create, edit, delete, and detail views
+- Status, priority, follow-up, and recruiter tracking
+- Dashboard summaries for offers, interviews, follow-ups, and recent activity
+- Demo seed script for quick setup
+
+## Local setup
+
+1. Copy `server/.env.example` to `server/.env`
+2. Set your MongoDB connection string in `MONGODB_URI`
+3. Install dependencies
+
+```bash
+npm install
+cd client && npm install
+cd ../server && npm install
+```
 
 ## Run locally
 
-```bash
-python manage.py migrate
-python manage.py runserver
-```
-
-Then open `http://127.0.0.1:8000/`.
-
-## Deploy on Vercel
-
-This repo includes a root `wsgi.py`, `requirements.txt`, `.python-version`, and `vercel.json` so Vercel can detect the Django entrypoint.
-
-Recommended environment variables:
+In separate terminals:
 
 ```bash
-SECRET_KEY=your-production-secret
-DEBUG=False
+cd server
+npm run dev
 ```
 
-Important note: this project currently uses SQLite for local development. For a real Vercel deployment, switch to a hosted database such as PostgreSQL.
+```bash
+cd client
+npm run dev
+```
+
+Or from the root:
+
+```bash
+npm run dev
+```
+
+## Seed demo data
+
+```bash
+cd server
+npm run seed
+```
+
+Demo account:
+
+- username: `demo`
+- password: `demo12345`
+
+## Notes
+
+- The old Django files are still present in the repo right now as legacy/reference code during the transition.
+- The active direction of the project is the new MERN client/server setup.
