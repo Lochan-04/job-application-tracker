@@ -75,7 +75,7 @@ export default function ApplicationDetailPage() {
         </div>
 
         <div className="rounded-[2rem] border border-ink/10 bg-white/90 p-8 shadow-card">
-          <h2 className="font-display text-2xl font-bold">Notes and preparation</h2>
+          <h2 className="font-display text-2xl font-bold">Notes</h2>
           <p className="mt-6 whitespace-pre-line text-lg leading-8 text-slate">{application.notes || "No notes yet."}</p>
         </div>
       </div>

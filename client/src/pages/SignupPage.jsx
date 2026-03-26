@@ -36,9 +36,9 @@ export default function SignupPage() {
     <section className="mx-auto max-w-2xl py-8 sm:py-12">
       <div className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-card sm:p-8">
         <p className="text-sm font-medium uppercase tracking-[0.25em] text-ink/50">Create account</p>
-        <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl">Create your placement tracker account</h1>
+        <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl">Create your account</h1>
         <p className="mt-3 text-ink/65">
-          Set up your account and manage jobs, internships, interviews, and follow-ups in one place.
+          Start tracking applications, interviews, and follow-ups in one place.
         </p>
         <form className="mt-8 grid gap-5" onSubmit={handleSubmit}>
           {error ? (

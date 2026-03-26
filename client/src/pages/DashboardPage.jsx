@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import api from "../api";
 import { StatusBadge } from "../components/Badges";
-import { statusChoices } from "../constants";
+import { jobTypeChoices, statusChoices } from "../constants";
 import { formatDateDisplay, labelFor } from "../utils";
 
 export default function DashboardPage() {
@@ -25,12 +25,12 @@ export default function DashboardPage() {
         <div className="rounded-[2rem] border border-white/70 bg-[linear-gradient(135deg,_rgba(11,23,42,0.98),_rgba(19,34,56,0.92))] p-6 text-white shadow-card sm:p-8 xl:p-10">
           <div className="max-w-3xl">
             <div className="max-w-2xl">
-              <p className="text-sm font-medium uppercase tracking-[0.25em] text-white/50">Placement Dashboard</p>
+              <p className="text-sm font-medium uppercase tracking-[0.25em] text-white/50">Dashboard</p>
               <h1 className="mt-4 max-w-[12ch] font-display text-[2.35rem] font-bold leading-[1.02] tracking-[-0.04em] sm:text-[3.2rem] xl:max-w-[12ch] xl:text-[4.1rem]">
-                Manage jobs and internships with a cleaner, placement-ready workflow.
+                Keep every application in one place and stay on top of what comes next.
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-7 text-white/68 sm:text-base sm:leading-8 lg:text-lg">
-                Track application status, follow-ups, resume versions, recruiter touchpoints, and next steps in one structured dashboard designed for real-world usability.
+                Follow your pipeline, store recruiter details, and keep interview notes and follow-ups from slipping through the cracks.
               </p>
             </div>
             <div className="mt-8 grid max-w-xl gap-4 sm:grid-cols-2">
@@ -49,13 +49,13 @@ export default function DashboardPage() {
         <div className="rounded-[2rem] border border-ink/10 bg-white/85 p-8 shadow-card">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Status Mix</p>
-              <h2 className="mt-2 font-display text-2xl font-bold">Pipeline balance</h2>
+              <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Status overview</p>
+              <h2 className="mt-2 font-display text-2xl font-bold">Where things stand</h2>
             </div>
             <span className="rounded-full bg-sky px-3 py-1 text-sm font-medium text-ink">{summary.offerCount} offers</span>
           </div>
           <div className="mt-6 space-y-4">
-            {statusChoices.map(([value, label]) => {
+            {statusChoices.map(({ value, label }) => {
               const count = summary.statusCounts?.[value] || 0;
               return (
                 <div key={value}>
@@ -81,7 +81,7 @@ export default function DashboardPage() {
         <div className="rounded-[2rem] border border-ink/10 bg-white/80 p-8 shadow-card">
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Recent records</p>
+              <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Recent activity</p>
               <h2 className="mt-2 font-display text-2xl font-bold">Latest applications</h2>
             </div>
             <Link className="text-sm font-medium text-pine" to="/applications">See all</Link>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate">
                   <span>Applied {formatDateDisplay(application.dateApplied)}</span>
-                  <span>{labelFor([["full-time","Full Time"],["part-time","Part Time"],["contract","Contract"],["internship","Internship"],["remote","Remote"]], application.jobType)}</span>
+                  <span>{labelFor(jobTypeChoices, application.jobType)}</span>
                   {application.resumeVersion ? <span>{application.resumeVersion}</span> : null}
                 </div>
               </Link>
@@ -107,8 +107,8 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid gap-6">
-          <PanelList title="Upcoming follow-ups" eyebrow="Action queue" badge="Stay proactive" items={summary.upcomingFollowUps} />
-          <PanelList title="Interview-ready applications" eyebrow="Interview lane" items={summary.interviewPipeline} interview />
+          <PanelList title="Upcoming follow-ups" eyebrow="To-do" badge="Needs attention" items={summary.upcomingFollowUps} />
+          <PanelList title="Interview stage" eyebrow="In progress" items={summary.interviewPipeline} interview />
         </div>
       </div>
     </section>
@@ -116,13 +116,15 @@ export default function DashboardPage() {
 }
 
 function MetricCard({ label, value, dark = false, green = false, subtle = false }) {
-  const className = dark
-    ? "rounded-3xl bg-white/8 p-5 backdrop-blur-sm"
-    : green
-      ? "rounded-3xl bg-pine p-5 text-canvas"
-      : subtle
-        ? "rounded-3xl bg-canvas p-5"
-        : "rounded-3xl bg-white p-5 text-ink";
+  let className = "rounded-3xl bg-white p-5 text-ink";
+
+  if (dark) {
+    className = "rounded-3xl bg-white/8 p-5 backdrop-blur-sm";
+  } else if (green) {
+    className = "rounded-3xl bg-pine p-5 text-canvas";
+  } else if (subtle) {
+    className = "rounded-3xl bg-canvas p-5";
+  }
 
   return (
     <div className={className}>

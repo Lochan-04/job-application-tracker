@@ -1,22 +1,22 @@
 export const statusChoices = [
-  ["wishlist", "Wishlist"],
-  ["applied", "Applied"],
-  ["screening", "Screening"],
-  ["interview", "Interview"],
-  ["offer", "Offer"],
-  ["rejected", "Rejected"]
+  { value: "wishlist", label: "Wishlist" },
+  { value: "applied", label: "Applied" },
+  { value: "screening", label: "Screening" },
+  { value: "interview", label: "Interview" },
+  { value: "offer", label: "Offer" },
+  { value: "rejected", label: "Rejected" }
 ];
 
 export const priorityChoices = [
-  ["high", "High"],
-  ["medium", "Medium"],
-  ["low", "Low"]
+  { value: "high", label: "High" },
+  { value: "medium", label: "Medium" },
+  { value: "low", label: "Low" }
 ];
 
 export const jobTypeChoices = [
-  ["full-time", "Full Time"],
-  ["part-time", "Part Time"],
-  ["contract", "Contract"],
-  ["internship", "Internship"],
-  ["remote", "Remote"]
+  { value: "full-time", label: "Full Time" },
+  { value: "part-time", label: "Part Time" },
+  { value: "contract", label: "Contract" },
+  { value: "internship", label: "Internship" },
+  { value: "remote", label: "Remote" }
 ];

@@ -21,10 +21,10 @@ export default function ApplicationsPage() {
       <div className="rounded-[2rem] border border-ink/10 bg-white/85 p-8 shadow-card">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Application database</p>
-            <h1 className="mt-2 font-display text-4xl font-bold">Structured records for jobs and internships.</h1>
+            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Applications</p>
+            <h1 className="mt-2 font-display text-4xl font-bold">A simple view of every role you have applied for.</h1>
             <p className="mt-3 max-w-2xl text-slate">
-              Search, filter, and review applications with status, source, follow-up timing, recruiter details, resume versions, and next actions in one place.
+              Search by company or role, sort the list your way, and quickly open the details you need before your next follow-up.
             </p>
           </div>
           <Link className="inline-flex rounded-2xl bg-navy px-5 py-3 font-medium text-canvas transition hover:-translate-y-0.5" to="/applications/new">
@@ -36,13 +36,13 @@ export default function ApplicationsPage() {
       <div className="grid gap-6 xl:grid-cols-[0.75fr_1.25fr]">
         <aside className="space-y-6">
           <div className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-card">
-            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Quick filters</p>
-            <h2 className="mt-2 font-display text-2xl font-bold">Find applications faster</h2>
+            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Filters</p>
+            <h2 className="mt-2 font-display text-2xl font-bold">Narrow the list</h2>
             <div className="mt-6 grid gap-4">
               <input className="form-control" placeholder="Search company, role, location, notes..." value={filters.q} onChange={(event) => setFilters({ ...filters, q: event.target.value })} />
               <select className="form-control" value={filters.status} onChange={(event) => setFilters({ ...filters, status: event.target.value })}>
                 <option value="">All statuses</option>
-                {statusChoices.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                {statusChoices.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
               </select>
               <select className="form-control" value={filters.sort} onChange={(event) => setFilters({ ...filters, sort: event.target.value })}>
                 <option value="updated">Recently updated</option>
@@ -56,8 +56,8 @@ export default function ApplicationsPage() {
 
         <div className="space-y-5">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Records</p>
-            <h2 className="mt-2 font-display text-3xl font-bold">Application timeline</h2>
+            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate">Your list</p>
+            <h2 className="mt-2 font-display text-3xl font-bold">Saved applications</h2>
           </div>
           {applications.map((application) => (
             <article key={application._id} className="rounded-[2rem] border border-ink/10 bg-white/90 p-6 shadow-card transition hover:-translate-y-1">

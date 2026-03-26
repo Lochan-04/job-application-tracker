@@ -20,4 +20,4 @@ export const formatDateDisplay = (value, options = {}) => {
 };
 
 export const labelFor = (choices, value) =>
-  choices.find((item) => item[0] === value)?.[1] || value;
+  choices.find((item) => item.value === value)?.label || value;

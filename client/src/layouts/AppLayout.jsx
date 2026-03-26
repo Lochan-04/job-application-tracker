@@ -26,7 +26,7 @@ export default function AppLayout() {
             <div className="grid h-12 w-12 place-items-center rounded-2xl bg-navy text-lg font-bold text-canvas shadow-card">PT</div>
             <div>
               <p className="font-display text-xl font-bold">Placement Tracker</p>
-              <p className="text-sm text-slate">Structured application tracking for real placement workflows.</p>
+              <p className="text-sm text-slate">Keep track of applications, interviews, and follow-ups.</p>
             </div>
           </Link>
           <nav className="flex flex-wrap items-center gap-3 text-sm font-medium">
@@ -37,7 +37,7 @@ export default function AppLayout() {
               Applications
             </NavLink>
             <NavLink className="rounded-full bg-navy px-4 py-2 text-canvas transition hover:-translate-y-0.5" to="/applications/new">
-              Add record
+              Add application
             </NavLink>
             <button className="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-slate transition hover:bg-white" onClick={handleLogout} type="button">
               Log out
